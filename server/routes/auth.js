@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { generateToken } = require('../utils/jwt');
+const { authenticate } = require('../middleware/auth');
 
 // @route   POST /api/auth/register
 // @desc    Register a new user
@@ -87,6 +88,55 @@ router.post('/login', async (req, res) => {
         role: user.role,
       },
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @route   GET /api/auth/profile
+// @desc    Get currently authenticated user profile
+// @access  Private
+router.get('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @route   PUT /api/auth/profile
+// @desc    Update currently authenticated user profile
+// @access  Private
+router.put('/profile', authenticate, async (req, res) => {
+  try {
+    const { name, email, phoneNumber, password } = req.body;
+    const user = await User.findById(req.user.id).select('+password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (email && email !== user.email) {
+      const emailTaken = await User.findOne({ email });
+      if (emailTaken) {
+        return res.status(400).json({ message: 'Email already in use' });
+      }
+      user.email = email;
+    }
+
+    if (name) user.name = name;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (password) user.password = password;
+
+    await user.save();
+
+    const updatedUser = await User.findById(user._id).select('-password');
+
+    res.status(200).json({ message: 'Profile updated successfully', data: updatedUser });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

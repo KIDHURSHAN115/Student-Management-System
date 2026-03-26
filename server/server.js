@@ -9,6 +9,8 @@ const studentRoutes = require('./routes/students');
 const courseRoutes = require('./routes/courses');
 const attendanceRoutes = require('./routes/attendance');
 const gradeRoutes = require('./routes/grades');
+const dashboardRoutes = require('./routes/dashboard');
+const notificationsRoutes = require('./routes/notifications');
 
 const app = express();
 
@@ -26,6 +28,8 @@ app.use('/api/students', studentRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/grades', gradeRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

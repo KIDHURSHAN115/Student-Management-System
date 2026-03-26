@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/Course');
+const Student = require('../models/Student');
 const { authenticate, authorize } = require('../middleware/auth');
 
 // @route   GET /api/courses
@@ -48,6 +49,76 @@ router.post('/', authenticate, authorize(['admin']), async (req, res) => {
       message: 'Course created successfully',
       data: course,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @route   POST /api/courses/:id/enroll
+// @desc    Enroll student in course
+// @access  Private/Admin/Lecturer
+router.post('/:id/enroll', authenticate, authorize(['admin', 'lecturer']), async (req, res) => {
+  try {
+    const { studentId } = req.body;
+    if (!studentId) {
+      return res.status(400).json({ message: 'Please provide studentId' });
+    }
+
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    if (course.enrolledStudents.includes(student._id)) {
+      return res.status(400).json({ message: 'Student already enrolled in this course' });
+    }
+
+    course.enrolledStudents.push(student._id);
+    student.courseId = course._id;
+
+    await course.save();
+    await student.save();
+
+    res.status(200).json({ message: 'Student enrolled successfully', course });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @route   POST /api/courses/:id/unenroll
+// @desc    Unenroll student from course
+// @access  Private/Admin/Lecturer
+router.post('/:id/unenroll', authenticate, authorize(['admin', 'lecturer']), async (req, res) => {
+  try {
+    const { studentId } = req.body;
+    if (!studentId) {
+      return res.status(400).json({ message: 'Please provide studentId' });
+    }
+
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    course.enrolledStudents = course.enrolledStudents.filter(id => id.toString() !== student._id.toString());
+    if (student.courseId && student.courseId.toString() === course._id.toString()) {
+      student.courseId = null;
+    }
+
+    await course.save();
+    await student.save();
+
+    res.status(200).json({ message: 'Student unenrolled successfully', course });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -84,4 +84,53 @@ router.get('/student/:studentId', authenticate, async (req, res) => {
   }
 });
 
+// @route   GET /api/grades/gpa/:studentId
+// @desc    Calculate GPA for a student
+// @access  Private
+router.get('/gpa/:studentId', authenticate, async (req, res) => {
+  try {
+    const grades = await Grade.find({ studentId: req.params.studentId });
+    if (grades.length === 0) {
+      return res.status(404).json({ message: 'No grades found' });
+    }
+
+    const totalGpa = grades.reduce((sum, item) => sum + item.gpa, 0);
+    const gpa = Number((totalGpa / grades.length).toFixed(2));
+
+    res.status(200).json({
+      studentId: req.params.studentId,
+      courseCount: grades.length,
+      gpa,
+      grades,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @route   GET /api/grades/report/:studentId
+// @desc    Generate report card for a student
+// @access  Private
+router.get('/report/:studentId', authenticate, async (req, res) => {
+  try {
+    const grades = await Grade.find({ studentId: req.params.studentId })
+      .populate('courseId', 'courseName credits description');
+
+    if (grades.length === 0) {
+      return res.status(404).json({ message: 'No grades found' });
+    }
+
+    const totalGpa = grades.reduce((sum, item) => sum + item.gpa, 0);
+    const gpa = Number((totalGpa / grades.length).toFixed(2));
+
+    res.status(200).json({
+      studentId: req.params.studentId,
+      report: grades,
+      cumulativeGpa: gpa,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

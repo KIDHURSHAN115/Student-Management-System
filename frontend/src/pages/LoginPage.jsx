@@ -56,64 +56,173 @@ const LoginPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 8, mb: 5 }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
-          Smart Student Management System
-        </Typography>
-        <Typography variant="h6" gutterBottom align="center" sx={{ mb: 4, color: 'text.secondary' }}>
-          Login
-        </Typography>
-
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            margin="normal"
-            required
-            variant="outlined"
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            margin="normal"
-            required
-            variant="outlined"
-          />
-
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ mt: 3, py: 1.5 }}
-            disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Login'}
-          </Button>
-
-          <Typography sx={{ mt: 2, textAlign: 'center' }}>
-            Don't have an account?{' '}
-            <span
-              onClick={() => navigate('/register')}
-              style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline', fontWeight: 'bold' }}
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+        backgroundSize: '400% 400%',
+        animation: 'gradient 15s ease infinite',
+        '@keyframes gradient': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        padding: '20px',
+      }}
+    >
+      <Container maxWidth="sm">
+        <Box
+          sx={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderRadius: '20px',
+            boxShadow: '0 8px 32px rgba(31, 38, 135, 0.2)',
+            padding: { xs: '30px 20px', sm: '50px 40px' },
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+          }}
+        >
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Box
+              sx={{
+                width: 60,
+                height: 60,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 20px',
+                boxShadow: '0 10px 30px rgba(59, 130, 246, 0.2)',
+              }}
             >
-              Register here
-            </span>
-          </Typography>
+              <Typography sx={{ fontSize: '32px', color: 'white', fontWeight: 'bold' }}>📚</Typography>
+            </Box>
+            <Typography
+              variant="h3"
+              sx={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 1,
+                fontWeight: 'bold',
+              }}
+            >
+              SSMS
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.8)',
+                mb: 3,
+                fontSize: '0.95rem',
+              }}
+            >
+              Smart Student Management System
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 600,
+                color: 'rgba(255, 255, 255, 0.9)',
+              }}
+            >
+              Welcome Back
+            </Typography>
+          </Box>
+
+          {error && (
+            <Alert
+              severity="error"
+              sx={{
+                mb: 3,
+                borderRadius: '12px',
+                border: '1px solid #fee2e2',
+              }}
+            >
+              {error}
+            </Alert>
+          )}
+
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Email Address"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              margin="normal"
+              required
+              variant="outlined"
+              placeholder="you@example.com"
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              margin="normal"
+              required
+              variant="outlined"
+              placeholder="Enter your password"
+              sx={{ mb: 3 }}
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{
+                py: 1.5,
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderRadius: '12px',
+              }}
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
+            </Button>
+
+            <Typography
+              sx={{
+                mt: 3,
+                textAlign: 'center',
+                color: 'rgba(255, 255, 255, 0.8)',
+                fontSize: '0.95rem',
+              }}
+            >
+              Don't have an account?{' '}
+              <Typography
+                component="span"
+                onClick={() => navigate('/register')}
+                sx={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  '&:hover': {
+                    opacity: 0.8,
+                  },
+                }}
+              >
+                Create Account
+              </Typography>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

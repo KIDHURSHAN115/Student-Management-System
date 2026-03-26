@@ -81,100 +81,219 @@ const RegisterPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 5, mb: 5 }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
-          Register
-        </Typography>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+        backgroundSize: '400% 400%',
+        animation: 'gradient 15s ease infinite',
+        '@keyframes gradient': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        padding: '20px',
+      }}
+    >
+      <Container maxWidth="sm">
+        <Box
+          sx={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderRadius: '20px',
+            boxShadow: '0 8px 32px rgba(31, 38, 135, 0.2)',
+            padding: { xs: '30px 20px', sm: '40px 35px' },
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+          }}
+        >
+          <Box sx={{ textAlign: 'center', mb: 3 }}>
+            <Box
+              sx={{
+                width: 60,
+                height: 60,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 20px',
+                boxShadow: '0 10px 30px rgba(59, 130, 246, 0.2)',
+              }}
+            >
+              <Typography sx={{ fontSize: '32px', color: 'white', fontWeight: 'bold' }}>📚</Typography>
+            </Box>
+            <Typography
+              variant="h4"
+              sx={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 1,
+                fontWeight: 'bold',
+              }}
+            >
+              Create Account
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.8)',
+                mb: 2,
+              }}
+            >
+              Join the Smart Student Management System
+            </Typography>
+          </Box>
 
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+          {error && (
+            <Alert
+              severity="error"
+              sx={{
+                mb: 2,
+                borderRadius: '12px',
+                border: '1px solid #fee2e2',
+              }}
+            >
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert
+              severity="success"
+              sx={{
+                mb: 2,
+                borderRadius: '12px',
+                border: '1px solid #dcfce7',
+              }}
+            >
+              {success}
+            </Alert>
+          )}
 
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Full Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            label="Phone Number"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            margin="normal"
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Role</InputLabel>
-            <Select
-              name="role"
-              value={formData.role}
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Full Name"
+              name="name"
+              value={formData.name}
               onChange={handleChange}
-              label="Role"
-            >
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="lecturer">Lecturer</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            label="Password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            label="Confirm Password"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
+              margin="normal"
+              required
+              placeholder="Enter your full name"
+              sx={{ mb: 1 }}
+            />
+            <TextField
+              fullWidth
+              label="Email Address"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              margin="normal"
+              required
+              placeholder="you@example.com"
+              sx={{ mb: 1 }}
+            />
+            <TextField
+              fullWidth
+              label="Phone Number"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              margin="normal"
+              placeholder="+1 (555) 000-0000"
+              sx={{ mb: 1 }}
+            />
+            <FormControl fullWidth margin="normal" sx={{ mb: 1 }}>
+              <InputLabel>Role</InputLabel>
+              <Select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                label="Role"
+              >
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="lecturer">Lecturer</MenuItem>
+                <MenuItem value="admin">Admin</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              fullWidth
+              label="Password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              margin="normal"
+              required
+              placeholder="Create a strong password"
+              sx={{ mb: 1 }}
+            />
+            <TextField
+              fullWidth
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              margin="normal"
+              required
+              placeholder="Re-enter your password"
+              sx={{ mb: 2 }}
+            />
 
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ mt: 3, py: 1.5 }}
-            disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Register'}
-          </Button>
-
-          <Typography sx={{ mt: 2, textAlign: 'center' }}>
-            Already have an account?{' '}
-            <span
-              onClick={() => navigate('/login')}
-              style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline', fontWeight: 'bold' }}
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{
+                py: 1.5,
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderRadius: '12px',
+              }}
+              disabled={loading}
             >
-              Login here
-            </span>
-          </Typography>
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Create Account'}
+            </Button>
+
+            <Typography
+              sx={{
+                mt: 3,
+                textAlign: 'center',
+                color: 'rgba(255, 255, 255, 0.8)',
+                fontSize: '0.95rem',
+              }}
+            >
+              Already have an account?{' '}
+              <Typography
+                component="span"
+                onClick={() => navigate('/login')}
+                sx={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  '&:hover': {
+                    opacity: 0.8,
+                  },
+                }}
+              >
+                Sign In
+              </Typography>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 
